@@ -35,13 +35,11 @@ int check_last_dig(char *s)
 
     snum = s;
    // printf("_snum_%s*\n", snum);
-
-   len = ft_strlen(snum);
+    len = ft_strlen(snum);
 
     if (s[0] == '0' || len == 0)
         return (0);
     s[8] = '\0';
-    len = ft_strlen(snum);
     snum = ft_itoa(ft_atoi(s) + 1);
 
     if (ft_strlen(snum) > len || snum[0] > '5')
@@ -70,7 +68,7 @@ void		round_line(char *s_full, t_qualfrs *fmt)
 
 	if(check_last_dig(&(s_full[i])))
 	{
-	    if (i >= 1)
+	    if (i > 1)
 	        replace_dig(&(s_full[i-1]), &f);
 	    else
 	        f = 1;
@@ -130,52 +128,30 @@ static long long	get_start_index(char *s_full, uint64_t *buf, t_qualfrs *fmt)
 	}
 }
 
-char		*save_frac_part(char *res_str, uint64_t *p_frac,uint64_t *p_int, t_qualfrs *fmt)
+char    *save_frac_part(char *res_str, uint64_t *buf, t_qualfrs *fmt)
 {
-	char			s_full[fmt->ld->realprec + 2 + 8 ]; //+ '.' +'\0' + lead_zeros
+	char			s_full[buf[0] * BASELEN + fmt->ld->count_0 + 2 + 8 ]; //+ '.' +'\0' + lead_zeros
 	long long		i;
-    char            *new;
 
-	i = (long long)p_frac[0] * BASELEN + fmt->ld->count_0 + 2;
+
+	i = buf[0] * BASELEN + fmt->ld->count_0 + 2;
 	fmt->ld->carry = 0;
 	if(fmt->ld->realprec == 0)
 	{
-		zero_prec(&(s_full[0]), p_frac, fmt);
+		zero_prec(&(s_full[0]), buf, fmt);
 	}
 	else
 	{
 		s_full[0] = '.';
-		i = get_start_index(&(s_full[1]), p_frac, fmt) + 1;
-		if (i == 0 && s_full[fmt->ld->count_0 + 1] == '0')
+		i = get_start_index(&(s_full[1]), buf, fmt) + 1;
+		if (i == 0 && s_full[fmt->ld->count_0 + 1] == '0' )
             return (fill_res_f(res_str,&(s_full[0]),fmt));
-		fill_prec(&(s_full[fmt->ld->count_0  + 1]), p_frac, fmt);
+		fill_prec(&(s_full[fmt->ld->count_0  + 1]), buf, fmt);
         round_line(&(s_full[1]), fmt);
 		if (fmt->ld->count_0 > 0 && fmt->ld->carry == 1)
-		{
-            s_full[i - 1] = '1';
-            fmt->ld->carry = 0;
-
-        }
+			s_full[i - 1] = '1';
 	}
-   /* printf("p_int1:\n");
-    for (unsigned n = p_int[0]; n >= 1; n--)
-    {
-        printf("_%llu_",p_int[n]);
-    }
-    printf("\n");*/
-	if (fmt->ld->carry == 1)
-    {
-        add_s(p_int, 1);
-	    if(fmt->ld->intlen < get_buflen(p_int)) //9.9999
-        {
-	        fmt->ld->newmem = 1;
-	        free(res_str);
-            fmt->ld->totallen += 1;
-	        new = (char*)malloc(fmt->ld->totallen * sizeof(char));
-            new[fmt->ld->totallen] = '\0';
-            return (fill_res_f(new,&(s_full[0]),fmt));
-        }
-    }
+	//printf("save_frac_part_%s*\n", &(s_full[0]));
 	return (fill_res_f(res_str,&(s_full[0]),fmt));
 }
 
@@ -187,12 +163,12 @@ void zero_prec(char *s_full, uint64_t *buf, t_qualfrs *fmt)
 	if (fmt->flg->sharp == 1)
 		s_full[0] = '.';
 
-	if (buf[buf[0]] != 0)
+	if (buf[1] != 0)
 	{
 		if(fmt->ld->count_0 > 0)
 			return ;
-		s_base = ft_itoa_base_ll(buf[buf[0]],10);
-		if(((s_base[0] - 48) > 5 ) || ((s_base[0] - 48) == 5 && s_base[1] - 48 > 0))
+		s_base = ft_itoa_base_ll(buf[1],10);
+		if((s_base[0] - 48) >= 5 && s_base[1] - 48 > 0)
 			fmt->ld->carry = 1;
 	}
 	s_full[1] = '\0';

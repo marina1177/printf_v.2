@@ -58,8 +58,6 @@ typedef struct				s_qualfrs
 
 typedef struct		s_float
 {
-    short               newmem;
-    long long           intlen;
     long long           sf_index;
     int                 iflg;//если intpart = 0 (первая цифра из fracpart)
     int                 fflg;//fmt->ld->fflg = 0;
@@ -155,7 +153,7 @@ void        put_first_simbol(char **p, t_qualfrs *fmt);
 /*
  * *save_frac_part.c
  */
-char		*save_frac_part(char *res_str, uint64_t *p_frac,uint64_t *p_int, t_qualfrs *fmt);
+char		*save_frac_part(char *res_str, uint64_t *buf, t_qualfrs *fmt);
 long long	get_buflen(uint64_t *buf);
 void		fill_prec(char *s_full, uint64_t *buf, t_qualfrs *fmt);
 void        round_line(char *s_full, t_qualfrs *fmt);
@@ -175,7 +173,7 @@ char 		*fill_res_e(char* res_str,  t_qualfrs *fmt);
 //int     mod (unsigned long long *buf, unsigned dig,  unsigned long long *res);
 uint64_t * mul_s(uint64_t *buf, unsigned dig);
 uint64_t * add(uint64_t *buf1, uint64_t *buf2);
-uint64_t   *add_s(uint64_t *buf,  uint64_t dig);
+unsigned long   *add_s(unsigned long *buf,  unsigned  long dig);
 uint64_t * div_s(uint64_t *buf, unsigned dig, uint64_t *res);
 
 void    div_mod_s(uint64_t *buf_a, uint64_t b, uint64_t *res, uint64_t *rem);

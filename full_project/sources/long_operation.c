@@ -66,7 +66,7 @@ uint64_t    *add(uint64_t *buf1, uint64_t *buf2)
     }
     return(buf1);
 }
-uint64_t  *add_s(uint64_t *buf,  uint64_t dig)
+unsigned long  *add_s(unsigned long *buf,  unsigned  long dig)
 {
     unsigned long long c;
     unsigned i;

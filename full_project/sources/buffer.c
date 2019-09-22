@@ -47,7 +47,6 @@ void buf_to_str(uint64_t *buf, char *s_full)  //count_0
         s_base = ft_itoa_base_ll(buf[buflen - j],10);
         j > 0 ? delta = (BASELEN - ft_strlen(s_base)) : 1;
         foo(s_full, i, delta);
-        //printf("&(s_full[i + delta])_%s*\n", &(s_full[i + delta]));
         ft_strcpy(&(s_full[i + delta]), s_base);
         i += ft_strlen(s_base) + delta;
         j += 1;

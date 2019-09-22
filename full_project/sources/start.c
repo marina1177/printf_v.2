@@ -4,14 +4,13 @@
 
 /*int main ()
 {
-    long double d =3.85;
-    printf("original:\n*%-05.0f*\n", 7.3);//prec0_1,0,1569134519
-    ft_printf("ft_:\n*%-05.0f*\n", 7.3);
-   ft_printf("ft_:\n*%.8Lf*\n", 3.85);
-    ft_printf("ft_:\n*%.8Lf*\n", d);
-    return (0);
-}*/
+    printf("original:\n*%f*\n", 1.0);
+    ft_printf("ft_:\n*%f*", 1.0);
 
+    return (0);
+
+}
+*/
 void     init_float(t_qualfrs *fmt, u_ld *un)
 {
     long double             d;
@@ -36,7 +35,6 @@ void     init_float(t_qualfrs *fmt, u_ld *un)
         fmt->flg->plus = 0;
     if (fmt->prcs == -1)
         fmt->prcs = 6;
-    fmt->ld->newmem = 0;
 }
 
 void	ft_print_floats(t_qualfrs *fmt)
