@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 19:22:54 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/09/21 12:23:51 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/24 12:22:57 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <string.h>
 
 # include <stdio.h>
-# define TYPES "cspdiouxXegfC%"
+# define TYPES "cspdiouxXegfC%S"
 # define ALLFLG "#0-+ "
 # define SPACE " "
 # define ADDRESS "0x"
@@ -36,7 +36,6 @@
 # define PLUS "+"
 # define MINUS "-"
 # define NULLPRINT "(null)"
-# define INF_NAN {"NAN", "nan", "INF", "inf"}
 # define BASE 1000000000
 # define BASELEN 9
 
@@ -124,6 +123,10 @@ typedef struct				s_div_coef
     short           borrow;  // переносы
 }							t_div_coef;
 
+/*
+ * * support_functions.c
+ */
+void    set_totallen(uint64_t *p_int, uint64_t *p_frac,  t_qualfrs *fmt);
 
 /*
  * * save_int_part_e.c
@@ -139,7 +142,7 @@ uint64_t *cut_buf(uint64_t *buf, long long len);
 char    *save_frac_part_e(char *sf, uint64_t *p_int, uint64_t *p_frac, t_qualfrs *fmt);
 int     fill_right_part(char *res_str, t_qualfrs *fmt);
 void    fill_e_end(char *s_full, t_qualfrs *fmt);
-
+long long get_totallen_e(uint64_t *p_int, t_qualfrs *fmt);
 long long number_pow(long long num);
 
 /*
@@ -255,7 +258,6 @@ void conver_parts(char *s_int, char *s_frac, t_qualfrs *fmt);
 
 //************************************************************************************************************************
 
-
 void	ft_print_floats(t_qualfrs *ql);
 
 int		ft_printf(const char *format, ...);
@@ -278,6 +280,7 @@ void	ft_print_di_pos2(t_qualfrs *ql);
 void	ft_print_di_pos3(t_qualfrs *ql);
 void	ft_print_di_pos4(t_qualfrs *ql);
 void	ft_print_number(t_qualfrs *ql);
+int		ft_zd(char *frm, t_qualfrs *ql);
 
 char	*ft_sign_lenchoose(t_qualfrs *ql);
 char	*ft_sign_lenchoose2(t_qualfrs *ql);
@@ -314,12 +317,15 @@ void		ft_print_str(t_qualfrs *ql);
 void		ft_print_char(t_qualfrs *ql);
 char		*ft_print_format(char *as, t_qualfrs *qual);
 
+void	ft_how_to_print2(t_qualfrs *ql);
+void	ft_how_to_print(t_qualfrs *ql);
+
 void	ft_color(t_qualfrs *ql);
 void	ft_zero_struct(t_qualfrs *ql);
 void	ft_zero_struct2(t_qualfrs *ql);
 void	ft_without_typs(t_qualfrs *ql);
 void	ft_print_percent(t_qualfrs *ql);
+void	ft_print_str_uni(t_qualfrs *ql);
 
-int		ft_inf_nan(char *s_int, t_qualfrs *ql);
-void	ft_print_nan_inf(t_qualfrs *ql, int f);
+int		ft_inf_nan(t_qualfrs *ql);
 #endif

@@ -6,7 +6,7 @@
 /*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 14:45:01 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/09/16 15:04:08 by cdemetra         ###   ########.fr       */
+/*   Updated: 2019/09/23 19:07:52 by cdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_precision(char *frm, t_qualfrs *ql)
 	int		i;
 
 	i = 0;
-	if (*frm == '.')
+	if (frm[0] == '.')
 	{
 		i++;
 		ql->prcs = 0;
@@ -73,7 +73,7 @@ int		ft_precision(char *frm, t_qualfrs *ql)
 		else
 		{
 			ql->prcs = ft_atoi(&(frm)[i]);
-			while (ql->prcs > 0 && frm[i] >= '0' && frm[i] <= '9')
+			while (ql->prcs >= 0 && frm[i] >= '0' && frm[i] <= '9')
 				i++;
 			return (i);
 		}
@@ -91,7 +91,7 @@ int		ft_length(char *frm, t_qualfrs *ql)
 	{
 		if (!len->h && !len->l && !len->L)
 		{
-			len->l = (frm[1] == 'l') ? len->l + 2 : 1;
+			len->l = (frm[1] == 'l') ? 2 : 1;
 			return (len->l);
 		}
 		return(1);

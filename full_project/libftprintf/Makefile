@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+         #
+#    By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/16 16:33:59 by cdemetra          #+#    #+#              #
-#    Updated: 2019/09/20 16:23:28 by bcharity         ###   ########.fr        #
+#    Updated: 2019/09/22 15:22:23 by cdemetra         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DIR_O = temporary
 
 HEADER = include
 
-SOURCES = ft_printf.c convercions.c itoa.c length.c\
+SOURCES = ft_printf.c convercions.c length.c\
 		parser.c print_format_csp.c print_int.c\
 		print_int2.c print_ox.c print_ox2.c\
 		print_u.c additional.c\
@@ -31,8 +31,8 @@ SOURCES = ft_printf.c convercions.c itoa.c length.c\
 		save_frac_part.c fill_res.c long_operation.c\
 		div_mod_l.c div_mod_l_2.c convert_mantiss.c print_int_part.c\
 		buffer.c start.c convert_bin_frac_part.c\
-		itoa.c 
-		
+		itoa2.c print_g.c
+
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

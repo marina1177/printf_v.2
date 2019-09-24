@@ -6,11 +6,29 @@
 /*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 18:53:04 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/08/23 17:25:53 by cdemetra         ###   ########.fr       */
+/*   Updated: 2019/09/24 17:09:24 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
+
+void	ft_how_to_print2(t_qualfrs *ql)
+{
+	if (ql->typs == TYPES[3] || ql->typs == TYPES[4])
+		ft_print_di(ql);
+	else if (ql->typs == TYPES[5] || ql->typs == TYPES[8]
+	|| ql->typs == TYPES[7])
+		ft_print_ox(ql);
+	else if (ql->typs == TYPES[6])
+		ft_print_u(ql);
+	else if (ql->typs == TYPES[12])
+		ft_color(ql);
+	else if (ql->typs == TYPES[11] ||
+	ql->typs == TYPES[10] || ql->typs == TYPES[9])
+		ft_print_floats(ql);
+
+	return ;
+}
 
 void	ft_how_to_print(t_qualfrs *ql)
 {
@@ -23,22 +41,12 @@ void	ft_how_to_print(t_qualfrs *ql)
 	{
 		if (ql->typs == TYPES[0])
 			ft_print_char(ql);
-		else if (ql->typs == TYPES[1])
+		else if (ql->typs == TYPES[1] || ql->typs == TYPES[14])
 			ft_print_str(ql);
 		else if (ql->typs == TYPES[2])
 			ft_print_pointer(ql);
 	}
-	else if (ql->typs == TYPES[3] || ql->typs == TYPES[4])
-		ft_print_di(ql);
-	else if (ql->typs == TYPES[5] || ql->typs == TYPES[8]
-	|| ql->typs == TYPES[7])
-		ft_print_ox(ql);
-	else if (ql->typs == TYPES[6])
-		ft_print_u(ql);
-	else if (ql->typs == TYPES[12])
-		ft_color(ql);
-    else if (ql->typs == TYPES[11] || ql->typs == TYPES[10] || ql->typs == TYPES[9])
-        ft_print_floats(ql);
+	ft_how_to_print2(ql);
 	return ;
 }
 
@@ -59,9 +67,9 @@ void	ft_create_and_free(t_qualfrs *ql, int f)
 
 void	ft_search_syntax(char *format, t_qualfrs *qual)
 {
-	char	*ser;
-	int		i;
-	int		fls;
+	char					*ser;
+	size_t				i;
+	size_t				fls;
 
 	i = 0;
 	fls = 0;
@@ -72,6 +80,7 @@ void	ft_search_syntax(char *format, t_qualfrs *qual)
 		i += ft_width(&(format)[i], qual);
 		i += ft_precision(&(format)[i], qual);
 		i += ft_length(&(format)[i], qual);
+		i += ft_zd(&(format)[i], qual);
 		if ((ser = ft_types(&(format)[i], qual)))
 			i++;
 		else

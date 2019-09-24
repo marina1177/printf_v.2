@@ -6,7 +6,7 @@
 /*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 16:28:55 by bcharity          #+#    #+#             */
-/*   Updated: 2019/09/21 14:57:36 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:02:49 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ long long get_totallen_f(uint64_t *p_int, t_qualfrs *fmt)
 
     (dt = fmt->width - totallen + 1) > 0 ? totallen += dt : 1;
     fmt->ld->delta = dt;
-    fmt->ld->totallen = totallen;
+    //fmt->ld->totallen = totallen;
     return (totallen);
 
 }
@@ -46,8 +46,7 @@ char *solve_f(uint64_t *p_int, uint64_t *p_frac, char **res_str, t_qualfrs *fmt)
     long long		totallen;
 
 
-   totallen = get_totallen_f(p_int,fmt);
-
+   totallen = fmt->ld->totallen;
 	*res_str = (char*)malloc(totallen * sizeof(char));
 	(*res_str)[totallen - 1] = '\0';
     pnt = save_frac_part(*res_str, p_frac, p_int, fmt);

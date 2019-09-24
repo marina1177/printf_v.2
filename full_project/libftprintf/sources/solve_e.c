@@ -6,7 +6,7 @@
 /*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 16:28:48 by bcharity          #+#    #+#             */
-/*   Updated: 2019/09/21 12:38:14 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/24 13:02:49 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ long long get_totallen_e(uint64_t *p_int, t_qualfrs *fmt)
     //======================================
     (dt = fmt->width - totallen + 1) > 0 ? totallen += dt : 1;
     fmt->ld->delta = dt;
-    fmt->ld->totallen = totallen;
+  //  fmt->ld->totallen = totallen;
     fmt->ld->sf_index = totallen - fmt->ld->sf_index  - 1;
     return (totallen);
 }
@@ -85,7 +85,7 @@ char *solve_e(uint64_t *p_int, uint64_t *p_frac, char **res_str, t_qualfrs *fmt)
 	char        *sf;
 	long long   totallen;
 
-  totallen = get_totallen_e(p_int, fmt);
+  totallen = fmt->ld->totallen;
 
  if(!(*res_str = ft_memalloc(totallen + 8 * sizeof(char))))
      return(NULL);

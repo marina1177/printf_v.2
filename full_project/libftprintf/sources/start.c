@@ -5,8 +5,8 @@
 /*int main ()
 {
     long double d =3.85;
-    printf("original:\n*%-05.0f*\n", 7.3);//prec0_1,0,1569134519
-    ft_printf("ft_:\n*%-05.0f*\n", 7.3);
+    printf("original:\n*% 5.0f*", 7.3);//prec0_1,0,1569134519
+    ft_printf("ft_:\n*% 5.0f*\n", 7.3);
    ft_printf("ft_:\n*%.8Lf*\n", 3.85);
     ft_printf("ft_:\n*%.8Lf*\n", d);
     return (0);
@@ -22,6 +22,7 @@ void     init_float(t_qualfrs *fmt, u_ld *un)
     else
         d = (long double)va_arg(fmt->ap, double);
     un->d = d;
+    fmt->ld->d = d;
     fmt->ld->exp  = un->bits.exponent - 16383;
     if (fmt->ld->exp < 0 )
     {
@@ -44,10 +45,13 @@ void	ft_print_floats(t_qualfrs *fmt)
     u_ld                 un;
     t_float              ldbl;
 
+   // ft_zero_struct(fmt);
     fmt->ld = &ldbl;
     init_float(fmt, &un);
+    if (ft_inf_nan(fmt))
+        return ;
     divide_and_conquer(&un, fmt);
-
+    ft_zero_struct(fmt);
 }
 
 void    divide_and_conquer(u_ld *un,  t_qualfrs *fmt)
@@ -122,12 +126,15 @@ void conver_parts(char *s_int, char *s_frac, t_qualfrs *fmt)
     else
         fmt->ld->fflg = 1;
 
+    set_totallen(p_int, p_frac, fmt);
    if ((fmt->typs) == 'f')
         solve_f(p_int, p_frac, &res_str, fmt);
    if ((fmt->typs) == 'e')
 	    solve_e(p_int, p_frac, &res_str, fmt);
     if ((fmt->typs) == 'g')
-        solve_e(p_int, p_frac, &res_str, fmt);
+    {
+
+    }
 
    free(res_str);
 

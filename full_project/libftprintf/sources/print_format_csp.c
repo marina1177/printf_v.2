@@ -6,7 +6,7 @@
 /*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 14:47:10 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/09/16 14:47:42 by cdemetra         ###   ########.fr       */
+/*   Updated: 2019/09/21 16:03:47 by cdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,30 @@ void	ft_print_char(t_qualfrs *ql)
 
 void	ft_print_str(t_qualfrs *ql)
 {
-	t_flag	*fl;
-	char	*str;
-	int		y;
-
-	fl = ql->flg;
-	if (!(str = va_arg(ql->ap, char*)))
-		str = NULLPRINT;
-	y = ft_strlen(str);
-	y = (ql->prcs >= 0  && ql->prcs < y) ? ql->prcs : y;
-	y = y > 0 ? y : 0;
+	if (!(ql->num = va_arg(ql->ap, char*)))
+		ql->num = NULLPRINT;
+	ql->countnum = ft_strlen(ql->num);
+	ql->countnum = (ql->prcs >= 0  && ql->prcs < ql->countnum)
+	? ql->prcs : ql->countnum;
+	ql->countnum = ql->countnum > 0 ? ql->countnum : 0;
 	if (ql->width > 0)
 	{
-		if (fl->minus > 0)
+		if (ql->flg->minus > 0)
 		{
-			ql->countchr += write(1, str, y);
-			ft_print_space(ql->width - y, ql);
+			ft_print_str_uni(ql);
+			ft_print_space(ql->width - ql->countnum, ql);
 		}
 		else
 		{
-			if (fl->zero)
-				ft_print_zero(ql->width - y, ql);
+			if (ql->flg->zero)
+				ft_print_zero(ql->width - ql->countnum, ql);
 			else
-				ft_print_space(ql->width - y, ql);
-			ql->countchr += write(1, str, y);
+				ft_print_space(ql->width - ql->countnum, ql);
+			ft_print_str_uni(ql);
 		}
 	}
 	else
-		ql->countchr += write (1, str, y);
+		ft_print_str_uni(ql);
 }
 
 void	ft_print_pointer2(t_qualfrs *ql)
