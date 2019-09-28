@@ -6,110 +6,85 @@
 /*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/19 16:28:55 by bcharity          #+#    #+#             */
-/*   Updated: 2019/09/24 13:02:49 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/28 19:20:23 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-
-
-long long get_totallen_f(uint64_t *p_int, t_qualfrs *fmt)
+char	*solve_f(uint64_t *p_i, uint64_t *p_f, char **res_s, t_qualfrs *fmt)
 {
-    long long		totallen;
-    int 			dt;
+	char			*si;
+	char			*pnt;
+	long long		totallen;
 
-    fmt->ld->intlen = get_buflen(p_int);
-    totallen = fmt->ld->intlen + 1 + fmt->ld->ovrld + fmt->ld->realprec ;// int part's length + '\0'+ overload(prec > 16383)
-
-    if(fmt->ld->realprec > 0 || fmt->flg->sharp)
-    {
-        totallen++; // + '.'
-    }
-    if(fmt->flg->plus != 0 || fmt->flg->space == 1)
-    {
-        totallen++; //+ sign
-    }
-
-    (dt = fmt->width - totallen + 1) > 0 ? totallen += dt : 1;
-    fmt->ld->delta = dt;
-    //fmt->ld->totallen = totallen;
-    return (totallen);
-
-}
-
-char *solve_f(uint64_t *p_int, uint64_t *p_frac, char **res_str, t_qualfrs *fmt)
-
-{
-    char			*si;
-    char			*pnt;
-    long long		totallen;
-
-
-   totallen = fmt->ld->totallen;
-	*res_str = (char*)malloc(totallen * sizeof(char));
-	(*res_str)[totallen - 1] = '\0';
-    pnt = save_frac_part(*res_str, p_frac, p_int, fmt);
-    //printf("pnt_%s*\n", pnt);
-	si = save_int_part(pnt, p_int, fmt);
-  //  printf("si_%s*\n", pnt);
-
-    if (fmt->ld->realprec > 0 || fmt->flg->sharp)
-    {
-        si[ft_strlen(si)] = '.';
-    }
-    else if (fmt->flg->minus && (fmt->ld->delta) > 0) {
-        si[ft_strlen(si)] = ' ';
-    }
-	write(1,pnt, fmt->ld->totallen - 1);
+	if (fmt->typs == 'f' || fmt->typs == 'F')
+		totallen = get_totallen_f(p_i, fmt);
+	else
+		totallen = fmt->ld->totallen;
+	*res_s = (char*)malloc((totallen + 1) * sizeof(char));
+	(*res_s)[totallen - 1] = '\0';
+	pnt = save_fp(*res_s, p_f, p_i, fmt);
+	si = save_int_part(pnt, p_i, fmt);
+	if (fmt->ld->realprec > 0 || fmt->flg->sharp)
+	{
+		si[ft_strlen(si)] = '.';
+	}
+	else if (fmt->flg->minus && (fmt->ld->delta) > 0)
+	{
+		si[ft_strlen(si)] = ' ';
+	}
+	write(1, pnt, fmt->ld->totallen - 1);
 	return (NULL);
 }
 
 void	put_first_simbol(char **p, t_qualfrs *fmt)
 {
- 	if (fmt->flg->plus > 0)
+	if (fmt->flg->plus > 0)
 		**p = '+';
-	else if(fmt->flg->plus < 0)
+	else if (fmt->flg->plus < 0)
 		**p = '-';
-	else if(fmt->flg->space)
+	else if (fmt->flg->space)
 	{
 		**p = ' ';
 	}
 	else
-		return;
-    (*p)++;
-
+		return ;
+	(*p)++;
 }
 
-char    *save_int_part(char *res_str, uint64_t *buf, t_qualfrs *fmt)
+char	*zero_nminus(char *p, t_qualfrs *fmt)
+{
+	if (fmt->flg->plus != 0 || fmt->flg->space == 1)
+		put_first_simbol(&p, fmt);
+	if (fmt->ld->delta > 0 && fmt->flg->zero)
+	{
+		ft_memset(p, '0', fmt->ld->delta);
+		p += fmt->ld->delta;
+	}
+	return (p);
+}
+
+char	*save_int_part(char *res_s, uint64_t *buf, t_qualfrs *fmt)
 {
 	char	*p;
 
-	p = res_str;
-		if (fmt->flg->zero && !fmt->flg->minus)
+	p = res_s;
+	if (fmt->flg->zero && !fmt->flg->minus)
+		p = zero_nminus(p, fmt);
+	else if (!fmt->flg->zero && !fmt->flg->minus)
+	{
+		if (fmt->ld->delta > 0)
 		{
-            if(fmt->flg->plus != 0 || fmt->flg->space == 1)
-                put_first_simbol(&p, fmt);
-            if(fmt->ld->delta > 0 && fmt->flg->zero)
-			{
-				ft_memset(p, '0', fmt->ld->delta);
-				p += fmt->ld->delta;
-			}
+			ft_memset(p, ' ', fmt->ld->delta);
+			p += fmt->ld->delta;
 		}
-		else if (!fmt->flg->zero && !fmt->flg->minus)
-		{
-			if(fmt->ld->delta > 0)
-			{
-				ft_memset(p, ' ', fmt->ld->delta);
-				p += fmt->ld->delta;
-			}
-			put_first_simbol(&(p), fmt);
-		}
-		else
-		    if(fmt->flg->plus != 0 || fmt->flg->space == 1)
-                 put_first_simbol(&p, fmt);
-		buf_to_str(buf, p);
-    	return(res_str);
+		put_first_simbol(&(p), fmt);
+	}
+	else if (fmt->flg->plus != 0 || fmt->flg->space == 1)
+		put_first_simbol(&p, fmt);
+	buf_to_str(buf, p);
+	return (res_s);
 }
 
 long long	get_buflen(uint64_t *buf)

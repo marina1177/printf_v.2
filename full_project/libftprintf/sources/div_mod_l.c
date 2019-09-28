@@ -6,7 +6,7 @@
 /*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 19:15:54 by bcharity          #+#    #+#             */
-/*   Updated: 2019/09/20 14:07:59 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/28 18:45:15 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void cicle_de_grandiozo(t_div_coef *divcoef, uint64_t *buf_a, uint64_t *buf_b, u
 	{
 		divcoef->qGuess = (buf_a[divcoef->uJ] * BASE+ buf_a[divcoef->uJ - 1]) / buf_b[divcoef->n];
 		divcoef->r = (buf_a[divcoef->uJ] * BASE + buf_a[divcoef->uJ - 1]) % buf_b[divcoef->n];
-		guess_stabilization(&(divcoef->r), &(divcoef->qGuess), buf_a[divcoef->uJ - 2], buf_b);
+		g_stab(&(divcoef->r), &(divcoef->qGuess), buf_a[divcoef->uJ - 2], buf_b);
 		divcoef->carry = 0;
 		divcoef->borrow = 0;
 		divcoef->borrow = buf_b_cicle(divcoef, buf_a, buf_b);

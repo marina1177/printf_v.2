@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 19:22:54 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/09/24 12:22:57 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/28 19:44:25 by bcharity         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <string.h>
 
 # include <stdio.h>
-# define TYPES "cspdiouxXegfC%S"
+# define TYPES "cspdiouxXegfC%SbEGF"
 # define ALLFLG "#0-+ "
 # define SPACE " "
 # define ADDRESS "0x"
@@ -123,47 +123,86 @@ typedef struct				s_div_coef
     short           borrow;  // переносы
 }							t_div_coef;
 
+
 /*
- * * support_functions.c
+ * *save_frac_part_e.c
  */
-void    set_totallen(uint64_t *p_int, uint64_t *p_frac,  t_qualfrs *fmt);
+void	after_round(char *sf, t_qualfrs *fmt);
+void	before_round(char *sf, t_qualfrs *fmt);
+void	fill_last_part(char *sf,uint64_t *p_frac, t_qualfrs *fmt);
+int		fill_int_part(char *sf,uint64_t *p_int, t_qualfrs *fmt);
+char	*save_fp_e(char *sf, uint64_t *p_int, uint64_t *p_frac, t_qualfrs *fmt);
+/*
+ * *fill_e_end.c
+ */
+char	*get_end_index(char *s_full, t_qualfrs *fmt);
+void	put_e_sig(char *p, t_qualfrs *fmt);
+void    fill_e_end(char *s_full, t_qualfrs *fmt);
+
+/*
+** conver_parts.c
+*/
+void    correct_prec(t_qualfrs *fmt);
+char    minlen_type(uint64_t *p_int, t_qualfrs *fmt);
+void    solve_type(uint64_t *p_int, uint64_t *p_frac, t_qualfrs *fmt);
+void	conver_parts(char *s_int, char *s_frac, t_qualfrs *fmt);
+
+/*
+ * * round_line.c
+ */
+void		round_line(char *s_full, t_qualfrs *fmt);
+int			check_last_dig(char *s);
+void		replace_dig(char *s_base_i, short *f);
+
+/*
+ * * get_totallen.c
+ */
+long long	 baselen(t_qualfrs *fmt);
+long long get_totallen_e(uint64_t *p_int, t_qualfrs *fmt);
+long long   get_totallen_e(uint64_t *p_int, t_qualfrs *fmt);
+long long   get_totallen_f(uint64_t *p_int, t_qualfrs *fmt);
+
+//*************************************************************************
 
 /*
  * * save_int_part_e.c
  */
-char     *save_int_part_e(char *res_str, t_qualfrs *fmt);
-long     fill_left_part(char *res_str, t_qualfrs *fmt);
+char	*save_int_part_e(char *res_str, t_qualfrs *fmt);
+void	nzero_nminus_e(char **p, t_qualfrs *fmt);
+void	zero_nminus_e(char **p, t_qualfrs *fmt);
+long	fill_left_part(char *res_str, t_qualfrs *fmt);
 
 /*
  * *solve_e.c
  */
-char    *solve_e(uint64_t *p_int, uint64_t *p_frac, char **res_str, t_qualfrs *fmt);
+char	*solve_e(uint64_t *p_i, uint64_t *p_f, char **res_s, t_qualfrs *fmt);
 uint64_t *cut_buf(uint64_t *buf, long long len);
-char    *save_frac_part_e(char *sf, uint64_t *p_int, uint64_t *p_frac, t_qualfrs *fmt);
+
 int     fill_right_part(char *res_str, t_qualfrs *fmt);
-void    fill_e_end(char *s_full, t_qualfrs *fmt);
-long long get_totallen_e(uint64_t *p_int, t_qualfrs *fmt);
-long long number_pow(long long num);
+
+
+
+
+long long   number_pow(long long num);
 
 /*
  * *solve_f.c
  */
-char        *solve_f(uint64_t *p_int, uint64_t *p_frac, char **res_str, t_qualfrs *fmt);
+char		*solve_f(uint64_t *p_i, uint64_t *p_f, char **res_s, t_qualfrs *fmt);
 char		*save_int_part(char *res_str, uint64_t *buf, t_qualfrs *fmt);
-long long   get_totallen_f(uint64_t *p_int, t_qualfrs *fmt);
+
+char		*zero_nminus(char *p, t_qualfrs *fmt);
 void		zero_prec(char *s_full, uint64_t *buf, t_qualfrs *fmt);
-void        put_first_simbol(char **p, t_qualfrs *fmt);
+void		put_first_simbol(char **p, t_qualfrs *fmt);
 
 
 /*
  * *save_frac_part.c
  */
-char		*save_frac_part(char *res_str, uint64_t *p_frac,uint64_t *p_int, t_qualfrs *fmt);
+char		*save_fp(char *res_s, uint64_t *p_frac,uint64_t *p_int, t_qualfrs *fmt);
 long long	get_buflen(uint64_t *buf);
 void		fill_prec(char *s_full, uint64_t *buf, t_qualfrs *fmt);
-void        round_line(char *s_full, t_qualfrs *fmt);
-int check_last_dig(char *s);
-void replace_dig(char *s_base_i, short *f);
+
 
 /*
  * *fill_res.c
@@ -192,7 +231,7 @@ void			print_bits(size_t size, void *ptr, char space);
 void        div_mod_l(uint64_t *buf_a, uint64_t *buf_b, uint64_t *res);
 int         simple_case_div_mod(uint64_t *buf_a, uint64_t *buf_b, uint64_t *res);
 void        buf_normalize(uint64_t *scale, uint64_t *buf_a, uint64_t *buf_b);
-void        guess_stabilization(uint64_t *r, uint64_t *qGuess, uint64_t nextpart, uint64_t *buf_b);
+void		g_stab(uint64_t *r, uint64_t *qG, uint64_t next, uint64_t *buf_b);
 short       get_borrow(long long temp2, long vJ, unsigned i, uint64_t *buf_a);
 long long   buf_b_cicle(t_div_coef *divcoef, uint64_t *buf_a, uint64_t *buf_b);
 void        check_borrow(t_div_coef *divcoef, uint64_t *buf_a, uint64_t *buf_b, uint64_t *res);
@@ -200,16 +239,13 @@ void        get_zero_buf(uint64_t *buf, uint64_t m);
 void        cicle_de_grandiozo(t_div_coef *divcoef, uint64_t *buf_a, uint64_t *buf_b, uint64_t *res);
 
 
-
-
-
 /*
  * convert_mantiss.c
  */
-void                replace_bit_max(void *src, char *int_part, char *frac_part, size_t size, t_qualfrs *fmt);
+void                replace_bit_max(void *src, char *int_part, char *frac_part, t_qualfrs *fmt);
 void                replace_bit_min(void *src, char *frac_part, size_t size, long long exp);
-char                *lead_zeros(long long exp, char *_part, char flag);
-void frac_to_str(void *src, char *frac_part, int i,int k, t_qualfrs *fmt);
+char                *lead_zeros(long long exp, char *part, char flag);
+void                frac_to_str(void *src, char *frac_part, int i,int k, t_qualfrs *fmt);
 
 /*
  * print_int_part.c
@@ -237,14 +273,16 @@ void                keep_mod(unsigned long *buf, unsigned long base, unsigned ba
 void                div_mod(unsigned long *buf, unsigned long *res, unsigned  long base, unsigned baselen, long long exp);
 void                convert_string(uint64_t *buf, char *s_part);
 
-
 /*
 ** buffer.c
 */
-unsigned long  *init_buf(unsigned long long_num, unsigned  long base, unsigned buflen);
+unsigned long       *init_buf(unsigned long long_num, unsigned  long base, unsigned buflen);
 unsigned            ret_buflen(unsigned long long_num, unsigned  long base);
 void                print_buf(unsigned long *buf, unsigned count_0, char c, t_qualfrs *fmt_feature);
 void                buf_to_str(uint64_t *buf, char *s_full);
+
+
+
 
 /*
 ** start.c
@@ -254,7 +292,6 @@ void                divide_and_conquer(u_ld *un, t_qualfrs *fmt);
 char                *ft_itoa_base_ll(uint64_t dig, int radix);
 void                pow_of_two(uint64_t *buf_2n, unsigned long exp);
 uint64_t            count_zero_after_point(long double d, t_qualfrs *fmt);
-void conver_parts(char *s_int, char *s_frac, t_qualfrs *fmt);
 
 //************************************************************************************************************************
 
@@ -304,7 +341,6 @@ void	ft_print_u_1(t_qualfrs *ql);
 void	ft_print_u_2(t_qualfrs *ql);
 void	ft_print_u_3(t_qualfrs *ql);
 
-
 char		*ft_itoa2(unsigned long long int n, int *x);
 void		ft_print_space(int	a, t_qualfrs *ql);
 void		ft_print_zero(int	a, t_qualfrs *ql);
@@ -313,7 +349,12 @@ char		*ft_10_to_16(unsigned long long x, t_qualfrs *ql);
 void		ft_search_syntax(char *format, t_qualfrs *qual);
 void		ft_print_pointer(t_qualfrs *ql);
 void		ft_print_pointer2(t_qualfrs *ql);
+void		ft_print_pointer2_1(t_qualfrs *ql);
 void		ft_print_str(t_qualfrs *ql);
+void		ft_print_str2(t_qualfrs *ql);
+void		ft_printwchar(wchar_t c, t_qualfrs *ql);
+size_t		ft_wstrlen(const char *str);
+int			ft_putwchar(int c);
 void		ft_print_char(t_qualfrs *ql);
 char		*ft_print_format(char *as, t_qualfrs *qual);
 
@@ -328,4 +369,6 @@ void	ft_print_percent(t_qualfrs *ql);
 void	ft_print_str_uni(t_qualfrs *ql);
 
 int		ft_inf_nan(t_qualfrs *ql);
+void	print_bits2(void *ptr, char *frac, int i);
+void	ft_print_b(t_qualfrs *ql);
 #endif

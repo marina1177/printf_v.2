@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+         #
+#    By: bcharity <bcharity@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/16 16:33:59 by cdemetra          #+#    #+#              #
-#    Updated: 2019/09/22 15:22:23 by cdemetra         ###   ########.fr        #
+#    Updated: 2019/09/28 14:08:10 by bcharity         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,17 @@ SOURCES = ft_printf.c convercions.c length.c\
 		print_int2.c print_ox.c print_ox2.c\
 		print_u.c additional.c\
 		some_function.c\
-		save_int_part_e.c solve_e.c solve_f.c\
+		save_int_part_e.c so+++++++++++++++,lve_e.c solve_f.c\
 		save_frac_part.c fill_res.c long_operation.c\
 		div_mod_l.c div_mod_l_2.c convert_mantiss.c print_int_part.c\
 		buffer.c start.c convert_bin_frac_part.c\
-		itoa2.c print_g.c
+		itoa2.c print_g.c save_frac_part_e.c\
+		fill_e_end.c conver_parts.c round_line.c\
+		get_totallen.c convert_bin_frac_part.c\
+		itoa2.c print_g.c print_b.c\
+		additional2.c 
+
+
 
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))

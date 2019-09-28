@@ -6,7 +6,7 @@
 /*   By: cdemetra <cdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 18:53:04 by cdemetra          #+#    #+#             */
-/*   Updated: 2019/09/24 17:09:24 by bcharity         ###   ########.fr       */
+/*   Updated: 2019/09/26 20:34:37 by cdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ void	ft_how_to_print2(t_qualfrs *ql)
 		ft_print_u(ql);
 	else if (ql->typs == TYPES[12])
 		ft_color(ql);
-	else if (ql->typs == TYPES[11] ||
-	ql->typs == TYPES[10] || ql->typs == TYPES[9])
+	else if (ql->typs == TYPES[11]
+	|| ql->typs == TYPES[10] || ql->typs == TYPES[9]
+	|| ql->typs == TYPES[16] || ql->typs == TYPES[17]
+	|| ql->typs == TYPES[18])
 		ft_print_floats(ql);
-
+	else if (ql->typs == TYPES[15])
+		ft_print_b(ql);
 	return ;
 }
 
@@ -37,7 +40,7 @@ void	ft_how_to_print(t_qualfrs *ql)
 	else if (ql->typs == TYPES[13])
 		ft_print_percent(ql);
 	else if (ql->typs == TYPES[0] || ql->typs == TYPES[1]
-	|| ql->typs == TYPES[2])
+	|| ql->typs == TYPES[2] || ql->typs == TYPES[14])
 	{
 		if (ql->typs == TYPES[0])
 			ft_print_char(ql);
@@ -67,7 +70,7 @@ void	ft_create_and_free(t_qualfrs *ql, int f)
 
 void	ft_search_syntax(char *format, t_qualfrs *qual)
 {
-	char					*ser;
+	char				*ser;
 	size_t				i;
 	size_t				fls;
 
